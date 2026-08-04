@@ -321,6 +321,16 @@
 </main>
 
 <script>
+  // Generate a random hex color code (e.g. #3F82E5)
+  function getRandomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  }
+
+  // Apply a random background color to each color-block on page load
+  document.querySelectorAll('.color-block').forEach(block => {
+    block.style.backgroundColor = getRandomColor();
+  });
+  
   // Total timer duration in seconds (30 minutes = 1800s)
   const totalDuration = 30 * 60;
   let timeRemaining = totalDuration;
