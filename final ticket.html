@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A7CF5">
+<title>SYG — Item Card</title>
+<style>
+  :root {
+    --blue: #0A7CF5;
+    --blue-deep: #0663C4;
+    --red: #F4302A;F
+    --page: #F2F2F5;
+    --ink: #111114;
+    --ink-soft: #5A5A63;
+    --ink-faint: #8A8A93;
+    --line: #E4E4E7;
+    --card-radius: 16px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100dvh;
+  }
+  .band {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 300px;
+    background: var(--blue);
+    border-radius: 0 0 32px 32px;
+    z-index: 0;
+  }
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: max(14px, env(safe-area-inset-top)) 12px 32px;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 2px 16px;
+  }
+  .back {
+    flex: 0 0 auto;
+    width: 38px; height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 140ms ease;
+  }
+  .back:hover { background: rgba(255,255,255,0.38); }
+  .back:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .title {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding-right: 38px;
+  }
+  .brand {
+    position: absolute;
+    top: max(18px, env(safe-area-inset-top));
+    right: 16px;
+    z-index: 2;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+  .card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 20px 16px 22px;
+    box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
+  }
+  .code-frame {
+    width: 200px;
+    margin: 0 auto;
+    border: 7px solid var(--red);
+    border-radius: 14px;
+    padding: 10px;
+  }
+  .code-slot {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #F0F0F0;
+    border: 1px solid #D8D8DC;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #6B6B72;
+    padding: 8px;
+    overflow: hidden;
+  }
+  .code-slot img, .code-slot svg, .code-slot canvas {
+    width: 100%; height: 100%; object-fit: contain; display: block;
+  }
+  .hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin: 13px 0 15px;
+  }
+  .rule {
+    border: 0;
+    border-top: 1.5px dashed #D2D2D6;
+    margin: 0 0 20px;
+  }
+  .row { text-align: center; }
+  .eyebrow {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .primary-id {
+    margin: 7px 0 16px;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.15;
+    word-break: break-word;
+  }
+  .sub {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .meta {
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  /* --- TIMER & ANIMATED COLOR BAR STYLES --- */
+  .status-widget {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  /* Three multi-colored blocks with pulsing fade effect */
+  .color-bar {
+    display: flex;
+    height: 8px;
+    width: 100%;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    animation: fadePulse 2s ease-in-out infinite;
+  }
+  .color-block { flex: 1; height: 100%; }
+  .color-block.blue { background-color: #2155FF; }
+  .color-block.peach { background-color: #F8D3C5; }
+  .color-block.teal { background-color: #4A807E; }
+
+  /* Fade animation keyframes */
+  @keyframes fadePulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Moving Progress Track and Handle */
+  .progress-track {
+    width: 80%;
+    height: 6px;
+    background-color: #DDE2E8;
+    border-radius: 3px;
+    margin: 0 auto 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #2155FF;
+    border-radius: 3px;
+    transition: width 1s linear;
+  }
+
+  /* Expiration Text Display */
+  .expiration-text {
+    font-size: 16px;
+    color: #111114;
+    margin-bottom: 16px;
+  }
+  .expiration-text span {
+    font-weight: 700;
+  }
+
+  .action {
+    display: block;
+    width: 100%;
+    margin: 10px 0 0;
+    padding: 13px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--line);
+    color: #333338;
+    font-family: inherit;
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    transition: background 140ms ease;
+  }
+  .action:hover { background: #D8D8DD; }
+  .action:focus-visible { outline: 2px solid var(--blue-deep); outline-offset: 2px; }
+  .foot {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin: 18px 0 0;
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 360px) {
+    .code-frame { width: 168px; }
+    .primary-id { font-size: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="band" aria-hidden="true"></div>
+
+<main class="shell">
+
+  <div class="topbar">
+    <button class="back" type="button" aria-label="Go back" onclick="history.back()">&#8249;</button>
+    <div class="title">One Way Ticket</div>
+  </div>
+
+  <section class="card">
+
+
+
+    <div class="code-frame">
+
+      <div class="code-slot" id="code-slot">
+
+<img src="data:image/png;base64,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r3KmvUPIPPG91bmV+UVxr+yaeRAti9to/67sjPRu5fpeHx/NOBMv6vNFIbK8W71c7B3zP1+zFy+SPl+R9p1Hz1d6u3pcHf+8nzDz5ooB6+bYD6ww+7ESNGdMOl4SPi+2fdiM8+6z6Tuq59jpJGfCZfS1/0u5Qv9/4pb/jweG+gfJ8jv9PqGqnceLf/u/d672Se3vMsP55/+mlrfz7rlTU8OiwNtlMbsp/598h1Dpbpn2f9Mnev/e8223fTdV/O33fT/0/X1s89/u5u/x59/vJv3j32/j//k8+/p8x/3X3X3X1d933eN3d193/x/f//6O7/P582/y13f3d13v8/69+/v++//0f19f/+3f3X//f+j8/v//+9//9X//v9//8u/+P//f/fX1/319/f33+///d/33d1d3df13/339X//1/d3X99d3//1ff9/3931ff/9//1d/9d//3f3d//f93/13/1ff/+33/f3/f1f13f13933//d3Xff/f993dfdd//d1/X//19X39d3/X9///ff9df/vdf3/v93df13ff1f/f//1fX93/f///df13/X1ff/1ff/13f9/1ff993/39f///39//d3d3d/X3/Xf3d3X3f///1f//f9ffd/dfdf9//f/f1f33f3X1X9///XdfXf3fXff/d/ff1ffdf93d1//1Xdfd19/33ffX3//f/ff3dd3X//3ffdfd//1///f939331f3fdf9///f/3Xf/X1//3dd31//3fdf39f/9X3dfXdf1/3Xff33//3f3f/33ffdd3f3fdf/1//d3d3fXff33df/dff/dfdf/9/3/13X1/19/3//df33d9f/df/f93/fXf3dd1//d3//fdf/df/dd/1//ddf3f//9/3d//1X93df3f/df9df9//1df3dfdf9/3d3d3f9f/df1//ddf39/9//33//d9/39f33dff/X/3dd13f9f3Xf1//ff19f19///X1/dfdfd///dd19/33/dfdfdf/3dd1f/X/df/9/3dfdfd/df9/13/X/3//f1f33f93df93dd39f//d3df39df3/33X191ff99f13dd3/X1dfdf9X//3/33ddf3//d9/dfX/9//f193fdfdf393df3df//f9dff99f19ffdf3ff/df3f13f///9dfdf33/Xdf1//d/df9/dfdff19/df9df3339f3//ff1ff/3f93f3d39dfd///df3X/dfdfdfd3/f9//ffX//33//ffdfdf//d3f9/ff//df/3fX3/f/f3dfd/9//fdfX/3ddfdf//ffdfX//f9f3df9/df1ff1//df3dfd3/dff3/3fdd/df9f//dfXff3d1/3d1dfdf393/df1df//1fX/9ff/3fXfdf/d3fX//ff9f1ff/3f93fX//X9f/d/f3dfd/9//f1f1d19ffX//d19X//91df3//fdf3df3df1dfd33f//Xff///3/df9XffX///ff1f3///9dfdf///df9df///3//df1dfX3///1df9df3X//fdf19/dfX///df/39/1/df9X//ffdf3///9/dfX//3f//Xdf//1///X/d/X/f//" alt="QR Code" class="qr-image">
+
+      </div>
+
+    </div>
+
+    <p class="hint">Tap to enlarge</p>
+
+    <hr class="rule">
+
+    <div class="row">
+      <p class="eyebrow">INTRASTATE</p>
+      <p class="primary-id">2</p>
+      <p class="sub">ZONE RIDE</p>
+      <p class="meta">1 Adult</p>
+    </div>
+
+    <div class="status-widget">
+      <div class="color-bar">
+        <div class="color-block blue"></div>
+        <div class="color-block peach"></div>
+        <div class="color-block teal"></div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="expiration-text">
+        Expires in: <span id="timer-display">30:00</span>
+      </div>
+    </div>
+
+    <button class="action" type="button">View Onboard Validator Instructions</button>
+
+  </section>
+
+
+</main>
+
+<script>
+  // Total timer duration in seconds (30 minutes = 1800s)
+  const totalDuration = 30 * 60;
+  let timeRemaining = totalDuration;
+
+  const timerDisplay = document.getElementById('timer-display');
+  const progressFill = document.getElementById('progress-fill');
+
+  function updateTimer() {
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+
+    // Format MM:SS
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+    // Update progress bar percentage width
+    const progressPercent = (timeRemaining / totalDuration) * 100;
+    progressFill.style.width = `${progressPercent}%`;
+
+    if (timeRemaining > 0) {
+      timeRemaining--;
+    } else {
+      clearInterval(timerInterval);
+      timerDisplay.textContent = "00:00";
+    }
+  }
+
+  // Initialize and run interval every 1 second
+  updateTimer();
+  const timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
