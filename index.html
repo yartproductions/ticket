@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0A7CF5">
 <title>SYG — Item Card</title>
 <style>
@@ -83,12 +84,12 @@
     font-weight: 700;
     letter-spacing: 0.16em;
   }
-  .card {
-    background: #fff;
-    border-radius: var(--card-radius);
-    padding: 20px 16px 22px;
-    box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
-  }
+.card {
+  background: #fff;
+  border-radius: var(--card-radius);
+  padding: 20px 16px 48px; /* Increased bottom padding to extend white card */
+  box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
+}
   .code-frame {
     width: 200px;
     margin: 0 auto;
@@ -219,7 +220,7 @@
   .action {
     display: block;
     width: 100%;
-    margin: 10px 0 0;
+    margin: 40px 0 0; /* Pushes the button further down inside the card */
     padding: 13px 12px;
     border: 0;
     border-radius: 10px;
