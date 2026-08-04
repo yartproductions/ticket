@@ -25,10 +25,11 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     min-height: 100dvh;
   }
-  .band {
+.band {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 300px;
+    width: 100%;
+    height: calc(300px + env(safe-area-inset-top));
     background: var(--blue);
     border-radius: 0 0 32px 32px;
     z-index: 0;
@@ -319,17 +320,16 @@
   const timerDisplay = document.getElementById('timer-display');
   const progressFill = document.getElementById('progress-fill');
 
-  function updateTimer() {
+function updateTimer() {
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
 
-    // Format MM:SS
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
     timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
 
-    // Update progress bar percentage width
-    const progressPercent = (timeRemaining / totalDuration) * 100;
+    // Calculates elapsed time so the progress bar grows from 0% to 100%
+    const progressPercent = ((totalDuration - timeRemaining) / totalDuration) * 100;
     progressFill.style.width = `${progressPercent}%`;
 
     if (timeRemaining > 0) {
