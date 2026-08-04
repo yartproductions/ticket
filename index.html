@@ -313,7 +313,7 @@
       </div>
     </div>
 
-    <button class="action" type="button">View Onboard Validator Instructions</button>
+    <button class="action" id="reset-btn" type="button" type="button">View Onboard Validator Instructions</button>
 
   </section>
 
@@ -321,24 +321,27 @@
 </main>
 
 <script>
-  // Generate a random hex color code (e.g. #3F82E5)
-  function getRandomColor() {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-  }
-
-  // Apply a random background color to each color-block on page load
-  document.querySelectorAll('.color-block').forEach(block => {
-    block.style.backgroundColor = getRandomColor();
-  });
-  
-  // Total timer duration in seconds (30 minutes = 1800s)
-  const totalDuration = 30 * 60;
+  const totalDuration = 30 * 60; // 30 minutes in seconds
   let timeRemaining = totalDuration;
 
   const timerDisplay = document.getElementById('timer-display');
   const progressFill = document.getElementById('progress-fill');
+  const actionBtn = document.getElementById('reset-btn');
+  const colorBlocks = document.querySelectorAll('.color-block');
 
-function updateTimer() {
+  // Palette of colors to randomly pick from
+  const colorPalette = ['#2155FF', '#F8D3C5', '#4A807E', '#FF5733', '#33FF57', '#9B51E0', '#F2994A', '#E0245E', '#17BF63'];
+
+  // Function to assign a new random color to each color block
+  function randomizeBlockColors() {
+    colorBlocks.forEach(block => {
+      const randomIndex = Math.floor(Math.random() * colorPalette.length);
+      block.style.backgroundColor = colorPalette[randomIndex];
+    });
+  }
+
+  // Timer update function
+  function updateTimer() {
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
 
@@ -346,19 +349,30 @@ function updateTimer() {
     const formattedSeconds = String(seconds).padStart(2, '0');
     timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
 
-    // Calculates elapsed time so the progress bar grows from 0% to 100%
     const progressPercent = ((totalDuration - timeRemaining) / totalDuration) * 100;
     progressFill.style.width = `${progressPercent}%`;
 
     if (timeRemaining > 0) {
       timeRemaining--;
     } else {
-      clearInterval(timerInterval);
       timerDisplay.textContent = "00:00";
     }
   }
 
-  // Initialize and run interval every 1 second
+  // Reset function called when tapping the button
+  function resetTimerAndColors() {
+    timeRemaining = totalDuration; // Reset timer back to 30:00
+    randomizeBlockColors();        // Change block colors
+    updateTimer();                 // Immediately update UI
+  }
+
+  // Attach tap/click event listener to the button
+  if (actionBtn) {
+    actionBtn.addEventListener('click', resetTimerAndColors);
+  }
+
+  // Initialize display
+  randomizeBlockColors();
   updateTimer();
   const timerInterval = setInterval(updateTimer, 1000);
 </script>
