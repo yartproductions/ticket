@@ -94,8 +94,11 @@
 .card {
   background: #fff;
   border-radius: var(--card-radius);
-  padding: 20px 16px 120px; /* Increased bottom padding to extend white card */
+  padding: 20px 16px 20px; /* Reduced bottom padding since the button will sit flush */
   box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px; /* Adjust this height if needed to fit your screen */
 }
   .code-frame {
     width: 200px;
@@ -159,11 +162,11 @@
     color: var(--ink-faint);
   }
 
-  /* --- TIMER & ANIMATED COLOR BAR STYLES --- */
-  .status-widget {
-    margin-top: 30px;
-    text-align: center;
-  }
+/* --- TIMER & ANIMATED COLOR BAR STYLES --- */
+.status-widget {
+  margin-top: auto; /* Pushes the entire block down to the very bottom edge */
+  text-align: center;
+}
 
   /* Three multi-colored blocks with pulsing fade effect */
   .color-bar {
@@ -227,7 +230,7 @@
   .action {
     display: block;
     width: 100%;
-    margin: 150px 0 0; /* Pushes the button further down inside the card */
+    margin: 16px 0 0; /* Changed from 150px to a clean 16px gap right below the timer */
     padding: 13px 12px;
     border: 0;
     border-radius: 10px;
