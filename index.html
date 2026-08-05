@@ -26,7 +26,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     min-height: 100dvh;
   }
-.band {
+  .band {
     position: absolute;
     top: 0; left: 0; right: 0;
     width: 100%;
@@ -75,12 +75,12 @@
     padding-right: 38px;
   }
   .qr-image {
-  width: 500px;  /* Set your desired width */
-  height: 500px; /* Keep aspect ratio square */
-  display: block;
-  margin: 0 auto;
-  object-fit: contain;
-}
+    width: 500px; 
+    height: 500px; 
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
   .brand {
     position: absolute;
     top: max(18px, env(safe-area-inset-top));
@@ -91,41 +91,41 @@
     font-weight: 700;
     letter-spacing: 0.16em;
   }
-.card {
-  background: #fff;
-  border-radius: var(--card-radius);
-  padding: 20px 16px 20px;
-  box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
-  
-  /* Forces the card to stretch and push bottom content down */
-  display: flex;
-  flex-direction: column;
-  min-height: 480px; 
-}
+  .card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 20px 16px 20px;
+    box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.06);
+    display: flex;
+    flex-direction: column;
+    min-height: 480px; 
+  }
   .code-frame {
     width: 200px;
     margin: 0 auto;
     border: 7px solid var(--red);
     border-radius: 14px;
-    padding: 0;          /* Remove padding completely */
+    padding: 0; 
     background: var(--red);
-    overflow: hidden;    /* Clips corners to match the border radius */
+    overflow: hidden; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   .code-slot {
     width: 100%;
     aspect-ratio: 1;
     background: var(--red);
     border: none;
-    border-radius: 0;    /* Remove inner border radius */
+    border-radius: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    transition: background-color 0.3s ease;
   }
   .code-slot img {
     width: 100%;
     height: 100%;
-    object-fit: cover;   /* Fills the entire frame edge-to-edge */
+    object-fit: cover; 
     display: block;
   }
   .hint {
@@ -138,7 +138,6 @@
     border: 0;
     border-top: 1.5px dashed #D2D2D6;
     margin: 0 0 20px;
-
   }
   .row { text-align: center; }
   .eyebrow {
@@ -165,13 +164,12 @@
     color: #66668a;
   }
 
-/* --- TIMER & ANIMATED COLOR BAR STYLES --- */
-.status-widget {
-  margin-top: 250px ; /* Pushes the entire block down to the very bottom edge */
-  text-align: center;
-}
+  /* --- TIMER & ANIMATED COLOR BAR STYLES --- */
+  .status-widget {
+    margin-top: 250px; 
+    text-align: center;
+  }
 
-  /* Three multi-colored blocks with pulsing fade effect */
   .color-bar {
     display: flex;
     height: 8px;
@@ -186,20 +184,12 @@
   .color-block.peach { background-color: #F8D3C5; }
   .color-block.teal { background-color: #4A807E; }
 
-  /* Fade animation keyframes */
   @keyframes fadePulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.35;
-    }
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 1; }
+    50% { opacity: 0.35; }
+    100% { opacity: 1; }
   }
 
-  /* Moving Progress Track and Handle */
   .progress-track {
     width: 80%;
     height: 6px;
@@ -220,7 +210,6 @@
     transition: width 1s linear;
   }
 
-  /* Expiration Text Display */
   .expiration-text {
     font-size: 16px;
     color: #111114;
@@ -233,7 +222,7 @@
   .action {
     display: block;
     width: 100%;
-    margin: 0 0 0; /* Changed from 150px to a clean 16px gap right below the timer */
+    margin: 0 0 0; 
     padding: 13px 12px;
     border: 0;
     border-radius: 10px;
@@ -248,13 +237,95 @@
   }
   .action:hover { background: #D8D8DD; }
   .action:focus-visible { outline: 2px solid var(--blue-deep); outline-offset: 2px; }
-  .foot {
-    text-align: center;
-    font-size: 11px;
-    color: var(--ink-faint);
-    margin: 18px 0 0;
-    letter-spacing: 0.04em;
+
+  /* --- ADJUSTMENT MODAL POPUP STYLES --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
   }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-card {
+    background: #fff;
+    width: 90%;
+    max-width: 340px;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .modal-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .modal-section {
+    margin-bottom: 14px;
+  }
+  .modal-section label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--ink-soft);
+  }
+  .color-picker-grid {
+    display: flex;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .color-option {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .color-option:hover { transform: scale(1.1); }
+  .color-option.selected { border-color: #111114; transform: scale(1.1); }
+
+  .number-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .num-btn {
+    padding: 8px;
+    background: var(--page);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+  .num-btn.selected {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+  }
+  .modal-close-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
   @media (max-width: 360px) {
     .code-frame { width: 168px; }
     .primary-id { font-size: 22px; }
@@ -269,36 +340,24 @@
 <div class="band" aria-hidden="true"></div>
 
 <main class="shell">
-
   <div class="topbar">
     <button class="back" type="button" aria-label="Go back" onclick="history.back()">&#8249;</button>
     <div class="title">One Way Ticket</div>
   </div>
 
   <section class="card">
-
-
-
-    <div class="code-frame">
-
+    <div class="code-frame" id="code-frame">
       <div class="code-slot" id="code-slot">
-
-        <img
-          src="./qr.PNG"
-          alt="QR Code"
-          class="qr-image"
-        >
+        <img src="./qr.PNG" alt="QR Code" class="qr-image">
       </div>
-
     </div>
 
     <p class="hint">Tap to enlarge</p>
-
     <hr class="rule">
 
     <div class="row">
       <p class="eyebrow">INTRASTATE</p>
-      <p class="primary-id">2</p>
+      <p class="primary-id" id="primary-id-target">2</p>
       <p class="sub">ZONE RIDE</p>
       <p class="meta">1 Adult</p>
     </div>
@@ -317,14 +376,46 @@
       <div class="expiration-text">
         Expires in: <span id="timer-display">30:00</span>
       </div>
+
+      <button class="action" id="reset-btn" type="button">View Onboard Validator Instructions</button>
+    </div>
+  </section>
+</main>
+
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal-card">
+    <h3>Card Settings</h3>
+    
+    <div class="modal-section">
+      <label>Frame Background Color</label>
+      <div class="color-picker-grid">
+        <div class="color-option" style="background: #9B51E0;" data-color="#9B51E0" title="Purple"></div>
+        <div class="color-option" style="background: #27AE60;" data-color="#27AE60" title="Green"></div>
+        <div class="color-option" style="background: #7F8C8D;" data-color="#7F8C8D" title="Grey"></div>
+        <div class="color-option" style="background: #F2C94C;" data-color="#F2C94C" title="Yellow"></div>
+        <div class="color-option selected" style="background: #F4302A;" data-color="#F4302A" title="Red"></div>
+        <div class="color-option" style="background: #EB5757;" data-color="#EB5757" title="Pink"></div>
+        <div class="color-option" style="background: #0A7CF5;" data-color="#0A7CF5" title="Blue"></div>
+      </div>
     </div>
 
-    <button class="action" id="reset-btn" type="button" type="button">View Onboard Validator Instructions</button>
+    <div class="modal-section">
+      <label>Primary ID Number (1-8)</label>
+      <div class="number-picker-grid">
+        <button class="num-btn selected" data-num="1">1</button>
+        <button class="num-btn" data-num="2">2</button>
+        <button class="num-btn" data-num="3">3</button>
+        <button class="num-btn" data-num="4">4</button>
+        <button class="num-btn" data-num="5">5</button>
+        <button class="num-btn" data-num="6">6</button>
+        <button class="num-btn" data-num="7">7</button>
+        <button class="num-btn" data-num="8">8</button>
+      </div>
+    </div>
 
-  </section>
-
-
-</main>
+    <button class="modal-close-btn" id="close-modal-btn">Apply & Reset</button>
+  </div>
+</div>
 
 <script>
   const totalDuration = 30 * 60; // 30 minutes in seconds
@@ -335,10 +426,17 @@
   const actionBtn = document.getElementById('reset-btn');
   const colorBlocks = document.querySelectorAll('.color-block');
 
-  // Palette of colors to randomly pick from
+  // Modal elements
+  const modal = document.getElementById('settings-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const codeFrame = document.getElementById('code-frame');
+  const codeSlot = document.getElementById('code-slot');
+  const primaryIdTarget = document.getElementById('primary-id-target');
+  const colorOptions = document.querySelectorAll('.color-option');
+  const numButtons = document.querySelectorAll('.num-btn');
+
   const colorPalette = ['#2155FF', '#F8D3C5', '#4A807E', '#FF5733', '#33FF57', '#9B51E0', '#F2994A', '#E0245E', '#17BF63'];
 
-  // Function to assign a new random color to each color block
   function randomizeBlockColors() {
     colorBlocks.forEach(block => {
       const randomIndex = Math.floor(Math.random() * colorPalette.length);
@@ -346,7 +444,6 @@
     });
   }
 
-  // Timer update function
   function updateTimer() {
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
@@ -365,22 +462,48 @@
     }
   }
 
-  // Reset function called when tapping the button
-  function resetTimerAndColors() {
-    timeRemaining = totalDuration; // Reset timer back to 30:00
-    randomizeBlockColors();        // Change block colors
-    updateTimer();                 // Immediately update UI
+  // Open adjustment screen when clicking the "-" button
+  if (actionBtn) {
+    actionBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
   }
 
-  // Attach tap/click event listener to the button
-  if (actionBtn) {
-    actionBtn.addEventListener('click', resetTimerAndColors);
+  // Close modal, apply changes, and reset timer/colors
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      timeRemaining = totalDuration; 
+      randomizeBlockColors();        
+      updateTimer();                 
+      modal.classList.remove('active');
+    });
   }
+
+  // Handle frame color selection
+  colorOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      colorOptions.forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+      const selectedColor = option.getAttribute('data-color');
+      codeFrame.style.borderColor = selectedColor;
+      codeFrame.style.backgroundColor = selectedColor;
+      codeSlot.style.backgroundColor = selectedColor;
+    });
+  });
+
+  // Handle number target selection (1-8)
+  numButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      numButtons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      primaryIdTarget.textContent = btn.getAttribute('data-num');
+    });
+  });
 
   // Initialize display
   randomizeBlockColors();
   updateTimer();
-  const timerInterval = setInterval(updateTimer, 1000);
+  setInterval(updateTimer, 1000);
 </script>
 
 </body>
