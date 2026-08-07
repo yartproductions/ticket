@@ -134,10 +134,18 @@
     color: var(--ink-faint);
     margin: 13px 0 15px;
   }
-  .rule {
+.rule {
     border: 0;
-    border-top: 1.5px dashed #D2D2D6;
-    margin: 0 0 20px;
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      #D2D2D6 0px,
+      #D2D2D6 4px,
+      transparent 4px,
+      transparent 12px
+    );
+    width: 60%; /* Shrinks the line so it looks neat and compact */
+    margin: 0 auto 20px; /* 'auto' on left and right centers it perfectly under the frame */
   }
   .row { text-align: center; }
   .eyebrow {
